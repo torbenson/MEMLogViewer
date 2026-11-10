@@ -3,7 +3,7 @@
   "displayName": "MEM Log Viewer",
   "description": "Finally, human-readable Intune and ConfigMgr (CMTrace-format) log files!",
   "version": "1.0.0",
-  "publisher": "Torbenson Consulting",
+  "publisher": "torbenson-consulting",
   "license": "MIT",
   "author": {
     "name": "Eric Torbenson"
@@ -38,6 +38,9 @@
     "mem"
   ],
   "pricing": "Free",
+  "sponsor": {
+    "url": "https://github.com/sponsors/torbenson"
+  },
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": true,
