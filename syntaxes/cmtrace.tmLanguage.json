@@ -1,0 +1,109 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "CMTrace Log",
+    "scopeName": "source.cmtrace",
+    "patterns": [
+        { "include": "#message-block" },
+        { "include": "#metadata-block" }
+    ],
+    "repository": {
+        "message-block": {
+            "comment": "Spans <![LOG[ to ]LOG]!>. May cross multiple lines",
+            "begin": "<!\\[LOG\\[",
+            "beginCaptures": {
+                "0": { "name": "comment.block.cmtrace" }
+            },
+            "end": "\\]LOG\\]!>",
+            "endCaptures": {
+                "0": { "name": "comment.block.cmtrace" }
+            },
+            "contentName": "string.unquoted.log-message.cmtrace",
+            "patterns": [
+                { "include": "#subcomponent" }
+            ]
+        },
+        "subcomponent": {
+            "comment": "Leading [Tag][Tag] chain some components put at the start of a message. \\G anchors it to just after <![LOG[. Keep in sync with SUBCOMPONENT_PREFIX_RE in src/parser.ts.",
+            "match": "\\G\\[[^\\]\\r\\n]+\\](?:[ \\t]*\\[[^\\]\\r\\n]+\\])*",
+            "name": "entity.name.namespace.subcomponent.cmtrace"
+        },
+        "metadata-block": {
+            "comment": "The <time=... date=... component=...> block after ]LOG]!>",
+            "begin": "<(?=time=)",
+            "beginCaptures": {
+                "0": { "name": "comment.block.cmtrace" }
+            },
+            "end": ">",
+            "endCaptures": {
+                "0": { "name": "comment.block.cmtrace" }
+            },
+            "patterns": [
+                { "include": "#attr-time" },
+                { "include": "#attr-date" },
+                { "include": "#attr-component" },
+                { "include": "#attr-type" },
+                { "include": "#attr-thread" },
+                { "include": "#attr-context" },
+                { "include": "#attr-file" },
+                { "include": "#attr-noise" }
+            ]
+        },
+        "attr-time": {
+            "comment": "time=value, dim the key, color the value",
+            "match": "\\btime=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "constant.numeric.time.cmtrace" }
+            }
+        },
+        "attr-date": {
+            "match": "\\bdate=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "constant.numeric.date.cmtrace" }
+            }
+        },
+        "attr-component": {
+            "match": "\\bcomponent=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "entity.name.tag.component.cmtrace" }
+            }
+        },
+        "attr-type": {
+            "match": "\\btype=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "constant.language.severity.cmtrace" }
+            }
+        },
+        "attr-context": {
+            "match": "\\bcontext=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "entity.name.type.context.cmtrace" }
+            }
+        },
+        "attr-thread": {
+            "match": "\\bthread=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "constant.numeric.thread.cmtrace" }
+            }
+        },
+        "attr-file": {
+            "match": "\\bfile=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" },
+                "1": { "name": "entity.name.function.file.cmtrace" }
+            }
+        },
+        "attr-noise": {
+            "comment": "context and any unrecognized attributes, render dimmed.",
+            "match": "\\b\\w+=(\"[^\"]*\")",
+            "captures": {
+                "0": { "name": "comment.block.cmtrace" }
+            }
+        }
+    }
+}

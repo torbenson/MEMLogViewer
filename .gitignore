@@ -1,0 +1,14 @@
+# Output from tests/compiles and AI tools
+node_modules/
+out/
+.claude/
+
+# Packaged extension (from `npm run package`)
+*.vsix
+
+# VS Code test runner downloads
+.vscode-test/
+
+# Extraneous OS files
+Thumbs.db
+.DS_Store

@@ -1,0 +1,27 @@
+# Everything not listed here ships in the .vsix. Keep this file in sync when
+# adding build output or assets.
+
+# Source and build config — only out/*.js is needed at runtime.
+src/**
+tsconfig.json
+package-lock.json
+**/*.ts
+**/*.map
+
+# Tests must not ship.
+out/test/**
+
+# Development-only directories.
+.vscode/**
+.vscode-test/**
+.github/**
+.claude/**
+.gitignore
+.gitattributes
+
+# Icon source; only the exported PNG ships.
+images/*.svg
+
+# NOTE: node_modules is deliberately NOT excluded here. vsce already prunes
+# devDependencies on its own, so a blanket exclusion would silently break the
+# extension on the day a real runtime dependency is added.

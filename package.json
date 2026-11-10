@@ -1,0 +1,128 @@
+{
+  "name": "mem-log-viewer",
+  "displayName": "MEM Log Viewer",
+  "description": "Finally, human-readable Intune and ConfigMgr (CMTrace-format) log files!",
+  "version": "1.0.0",
+  "publisher": "Torbenson Consulting",
+  "license": "MIT",
+  "author": {
+    "name": "Eric Torbenson"
+  },
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1f2a37",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/torbenson/MEMLogViewer#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/torbenson/MEMLogViewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/torbenson/MEMLogViewer/issues"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "intune",
+    "intunemanagementextension",
+    "cmtrace",
+    "sccm",
+    "sms",
+    "configmgr",
+    "mem"
+  ],
+  "pricing": "Free",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true,
+      "description": "Reads log text and applies editor decorations to CMTrace log files"
+    },
+    "virtualWorkspaces": true
+  },
+  "activationEvents": [
+    "onLanguage:cmtrace",
+    "onLanguage:log",
+    "onLanguage:plaintext"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "cmtrace",
+        "aliases": ["CMTrace Log", "cmtrace"],
+        "firstLine": "^<!\\[LOG\\["
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cmtrace",
+        "scopeName": "source.cmtrace",
+        "path": "./syntaxes/cmtrace.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "mem-log-viewer.parseLogs",
+        "title": "Parse Active Log File",
+        "category": "MEM Log"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "mem-log-viewer.parseLogs",
+          "when": "editorLangId == cmtrace"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "MEM Log Viewer",
+      "properties": {
+        "mem-log-viewer.enableHighlighting": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable the highlighting of warning/error lines."
+        },
+        "mem-log-viewer.warningColor": {
+          "type": "string",
+          "default": "#ffc80033",
+          "markdownDescription": "Background highlight color for warning entries (`type=2`). Accepts any CSS color value, e.g. `#ffc80033` or `rgba(255, 200, 0, 0.2)`."
+        },
+        "mem-log-viewer.errorColor": {
+          "type": "string",
+          "default": "#ff000033",
+          "markdownDescription": "Background highlight color for error entries (`type=3`). Accepts any CSS color value, e.g. `#ff000033` or `rgba(255, 0, 0, 0.2)`."
+        },
+        "mem-log-viewer.subComponentStyle": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["bold", "italic", "underline"]
+          },
+          "uniqueItems": true,
+          "default": ["bold"],
+          "markdownDescription": "Font styles for the bracketed sub-component tags sometimes found at the start of a message, such as `[Win32App][ActionProcessor]`. Combine any of `bold`, `italic` and `underline`; an empty list leaves only the theme color."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test \"out/test/**/*.test.js\"",
+    "package": "npx --yes @vscode/vsce package",
+    "publish": "npx --yes @vscode/vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  }
+}
